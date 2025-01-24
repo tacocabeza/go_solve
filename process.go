@@ -65,12 +65,12 @@ func getMazeBoard(file io.Reader) (Maze, error) {
 
 			fmt.Printf("r=%d, g=%d, b=%d, a=%d \n", r/257, g/257, b/257, a/257)
 
-			if r == 0 && g == 0 && b == 0 {
+			if r/257 == 0 && g/257 == 0 && b/257 == 0 {
 				// pixel is black
-				board[x][y] = 1
+				board[y][x] = 1
 			} else {
 				// if pixel is white
-				board[x][y] = 0
+				board[y][x] = 0
 			}
 
 		}
