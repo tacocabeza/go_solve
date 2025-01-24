@@ -16,6 +16,12 @@ func main() {
 
 	fmt.Println(dir)
 
-	process(dir)
+	maze, err := process(dir)
+
+	if err != nil {
+		fmt.Println("Could not process Maze")
+	}
+
+	fmt.Printf("(main.go) - maze board:%d\n", maze.Board)
 
 }

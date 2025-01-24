@@ -11,10 +11,10 @@ import (
 type Maze struct {
 	Height int
 	Width  int
-	Board  []int
+	Board  [][]int
 }
 
-func process(dir string) {
+func process(dir string) (Maze, error) {
 
 	fmt.Println("processing file", dir)
 
@@ -38,12 +38,7 @@ func process(dir string) {
 
 	fmt.Printf("len=%d cap=%d %v\n", len(maze.Board), cap(maze.Board), maze.Board)
 
-	fmt.Printf(
-		"Length: %d, Width: %d, squares: %d",
-		maze.Height,
-		maze.Width,
-		maze.Height*maze.Width,
-	)
+	return maze, err
 }
 
 func getMazeBoard(file io.Reader) (Maze, error) {
@@ -59,28 +54,31 @@ func getMazeBoard(file io.Reader) (Maze, error) {
 
 	fmt.Printf("width=%d, height=%d", width, height)
 
-	var arr []int
+	board := make([][]int, width)
+	for i := range board {
+		board[i] = make([]int, height)
+	}
 
-	for y := 0; y < height; y++ {
-		for x := 0; x < width; x++ {
-
+	for x := range board {
+		for y := range board[x] {
 			r, g, b, a := img.At(x, y).RGBA()
 
 			fmt.Printf("r=%d, g=%d, b=%d, a=%d \n", r/257, g/257, b/257, a/257)
 
 			if r == 0 && g == 0 && b == 0 {
-				// if pixel is black
-				arr = append(arr, 1)
+				// pixel is black
+				board[x][y] = 1
 			} else {
 				// if pixel is white
-				arr = append(arr, 0)
+				board[x][y] = 0
 			}
+
 		}
 	}
 
 	return Maze{
 		Height: height,
 		Width:  width,
-		Board:  arr,
+		Board:  board,
 	}, err
 }
