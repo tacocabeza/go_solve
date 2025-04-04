@@ -24,4 +24,6 @@ func main() {
 
 	fmt.Printf("(main.go) - maze board:%d\n", maze.Board)
 
+	solve(maze)
+
 }

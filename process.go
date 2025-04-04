@@ -82,3 +82,22 @@ func getMazeBoard(file io.Reader) (Maze, error) {
 		Board:  board,
 	}, err
 }
+
+func solve(mazeToSolve Maze) Maze {
+
+	visited := make([][]bool, mazeToSolve.Width)
+	correctPath := make([][]bool, mazeToSolve.Width)
+
+	for i := range visited {
+		visited[i] = make([]bool, mazeToSolve.Height)
+	}
+
+	for i := range correctPath {
+		correctPath[i] = make([]bool, mazeToSolve.Height)
+	}
+
+	fmt.Printf("(process.go): visited? %t\n", visited)
+	fmt.Printf("(process.go): correctPath? %t\n", correctPath)
+
+	return mazeToSolve
+}
