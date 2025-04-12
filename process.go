@@ -88,30 +88,31 @@ func getMazeBoard(file io.Reader) (Maze, error) {
 
 	endX := 0
 	endY := 0
-	for x := range board {
-		for y := range board[x] {
+
+	for y := range board {
+		for x := range board[y] {
 			r, g, b, _ := img.At(x, y).RGBA()
 
 			// fmt.Printf("r=%d, g=%d, b=%d, a=%d \n", r/257, g/257, b/257, a/257)
 
 			if r/257 == 0 && g/257 == 0 && b/257 == 0 {
 				// pixel is black
-				board[y][x] = 1
+				board[x][y] = 1
 			} else {
 				// if pixel is white
-				board[y][x] = 0
+				board[x][y] = 0
 			}
 
 			if y == 0 || x == width-1 || x == 0 || y == height-1 {
-				if board[y][x] == 0 && foundStart {
+				if board[x][y] == 0 && foundStart {
 					endX = x
 					endY = y
-					fmt.Printf("END: (%d, %d)\n", y, x)
-				} else if board[y][x] == 0 && !foundStart {
+					fmt.Printf("END: (%d, %d)\n", x, y)
+				} else if board[x][y] == 0 && !foundStart {
 					foundStart = true
 					startX = x
 					startY = y
-					fmt.Printf("START: (%d, %d)\n", y, x)
+					fmt.Printf("START: (%d, %d)\n", x, y)
 				}
 			}
 
