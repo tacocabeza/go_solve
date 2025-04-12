@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"time"
 )
 
 func main() {
@@ -16,13 +17,15 @@ func main() {
 
 	fmt.Println(dir)
 
+	start := time.Now()
 	maze, err := process(dir)
+	elasped := time.Since(start)
+	fmt.Printf("(main.go) - processing maze took %s\n", elasped)
 
 	if err != nil {
 		fmt.Println("Could not process Maze")
 	}
 
-	fmt.Printf("(main.go) - maze board:%d\n", maze.Board)
 	fmt.Printf(
 		"(main.go) - start/end (%d,%d)/(%d/%d)",
 		maze.Start.X,
@@ -31,8 +34,9 @@ func main() {
 		maze.End.Y,
 	)
 
+	start = time.Now()
 	solve(maze)
-
-	fmt.Printf("(main.go) - solution: %t\n", maze.correctPath)
+	elasped = time.Since(start)
+	fmt.Printf("(main.go) - solving maze took %s\n", elasped)
 
 }

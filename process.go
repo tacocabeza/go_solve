@@ -45,8 +45,6 @@ func process(dir string) (Maze, error) {
 		os.Exit(1)
 	}
 
-	fmt.Printf("len=%d cap=%d %v\n", len(maze.Board), cap(maze.Board), maze.Board)
-
 	return maze, err
 }
 
@@ -74,9 +72,6 @@ func getMazeBoard(file io.Reader) (Maze, error) {
 		correctPath[i] = make([]bool, height)
 	}
 
-	fmt.Printf("(process.go): visited? %t\n", visited)
-	fmt.Printf("(process.go): correctPath? %t\n", correctPath)
-
 	board := make([][]int, width)
 	for i := range board {
 		board[i] = make([]int, height)
@@ -92,8 +87,6 @@ func getMazeBoard(file io.Reader) (Maze, error) {
 	for y := range board {
 		for x := range board[y] {
 			r, g, b, _ := img.At(x, y).RGBA()
-
-			// fmt.Printf("r=%d, g=%d, b=%d, a=%d \n", r/257, g/257, b/257, a/257)
 
 			if r/257 == 0 && g/257 == 0 && b/257 == 0 {
 				// pixel is black
@@ -131,8 +124,6 @@ func getMazeBoard(file io.Reader) (Maze, error) {
 }
 
 func recursiveSolve(mazeToSolve Maze, x int, y int) bool {
-
-	fmt.Printf("position: (%d, %d)\n", x, y)
 
 	if x == mazeToSolve.End.X && y == mazeToSolve.End.Y {
 		fmt.Printf("recursiveSolve: got to the end (%d, %d)\n", x, y)
