@@ -23,7 +23,16 @@ func main() {
 	}
 
 	fmt.Printf("(main.go) - maze board:%d\n", maze.Board)
+	fmt.Printf(
+		"(main.go) - start/end (%d,%d)/(%d/%d)",
+		maze.Start.X,
+		maze.Start.Y,
+		maze.End.X,
+		maze.End.Y,
+	)
 
 	solve(maze)
+
+	fmt.Printf("(main.go) - solution: %t\n", maze.correctPath)
 
 }
