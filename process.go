@@ -22,7 +22,6 @@ type Maze struct {
 	correctPath [][]bool
 	Start       Point
 	End         Point
-	mazeFile    io.Reader
 }
 
 func process(dir string) (Maze, error) {
@@ -122,7 +121,6 @@ func getMazeBoard(file io.Reader) (Maze, error) {
 		correctPath: correctPath,
 		Start:       Point{X: startX, Y: startY},
 		End:         Point{X: endX, Y: endY},
-		mazeFile:    file,
 	}, err
 }
 
