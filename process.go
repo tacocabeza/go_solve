@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"image"
+	"image/color"
 	"image/png"
 	"io"
 	"os"
@@ -21,6 +22,7 @@ type Maze struct {
 	correctPath [][]bool
 	Start       Point
 	End         Point
+	mazeFile    io.Reader
 }
 
 func process(dir string) (Maze, error) {
@@ -120,6 +122,7 @@ func getMazeBoard(file io.Reader) (Maze, error) {
 		correctPath: correctPath,
 		Start:       Point{X: startX, Y: startY},
 		End:         Point{X: endX, Y: endY},
+		mazeFile:    file,
 	}, err
 }
 
@@ -127,6 +130,7 @@ func recursiveSolve(mazeToSolve Maze, x int, y int) bool {
 
 	if x == mazeToSolve.End.X && y == mazeToSolve.End.Y {
 		fmt.Printf("recursiveSolve: got to the end (%d, %d)\n", x, y)
+		mazeToSolve.correctPath[x][y] = true
 		return true
 	}
 
@@ -167,9 +171,41 @@ func recursiveSolve(mazeToSolve Maze, x int, y int) bool {
 	return false
 }
 
+func generateSolutionMaze(solvedMaze Maze) {
+
+	topLeft := image.Point{0, 0}
+	bottomRight := image.Point{solvedMaze.Width, solvedMaze.Height}
+
+	img := image.NewRGBA(image.Rectangle{topLeft, bottomRight})
+	for y := range solvedMaze.correctPath {
+		for x := range solvedMaze.correctPath[y] {
+
+			if solvedMaze.Board[x][y] == 1 && !solvedMaze.correctPath[x][y] {
+				img.Set(x, y, color.Black)
+			} else if solvedMaze.Board[x][y] == 0 && !solvedMaze.correctPath[x][y] {
+				img.Set(x, y, color.White)
+			}
+
+			if solvedMaze.correctPath[x][y] {
+
+				img.Set(x, y, color.RGBA{0, 255, 0, 0xff})
+
+			}
+
+		}
+	}
+
+	fileName := "maze_solution.png"
+	fmt.Printf("(process.go) - generating solution: %s\n", fileName)
+	f, _ := os.Create(fileName)
+	png.Encode(f, img)
+}
+
 func solve(mazeToSolve Maze) Maze {
 
 	recursiveSolve(mazeToSolve, mazeToSolve.Start.X, mazeToSolve.Start.Y)
+
+	generateSolutionMaze(mazeToSolve)
 
 	return mazeToSolve
 }
